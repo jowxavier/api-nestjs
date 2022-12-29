@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,7 +11,8 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [
     MongooseModule.forRoot('mongodb://apinest:123456@localhost:27017/admin'),
     UsersModule,
-    TasksModule
+    TasksModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
