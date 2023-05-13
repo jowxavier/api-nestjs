@@ -1,30 +1,23 @@
-import { User } from './shared/user';
-import { UsersService } from './shared/users.service';
-import { Controller, Get, Param, Body, Post, Put } from '@nestjs/common';
+import { PrismaService } from 'src/database/prisma.service';
+import { Body, Controller, Get, Post} from '@nestjs/common';
+import { UserDto } from './dto/user.dto';
+import { UserRepository } from './repository/user.repository';
 
 @Controller('users')
 export class UsersController {
   constructor(
-    private usersService: UsersService,
+    private repository: UserRepository
   ) { }
 
   @Get()
-  async getAll(): Promise<User[]> {
-    return this.usersService.getAll();
-  }
-
-  @Get(':id')
-  async getById(@Param('id') id: string): Promise<User> {
-    return this.usersService.getById(id);
+  async getAll() {
+      return { mesasage: "Lista Usuários" };
   }
 
   @Post()
-  async create(@Body() user: User): Promise<User> {
-    return this.usersService.create(user);
-  }
+  async save(@Body() request: UserDto) {
+    const { name, email, password } = request
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() user: User): Promise<User> {
-    return this.usersService.update(id, user);
+    await this.repository.create(name, email, password)
   }
 }
