@@ -1,7 +1,7 @@
-import { PrismaService } from 'src/database/prisma.service';
 import { Body, Controller, Get, Post} from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UserRepository } from './repository/user.repository';
+import * as bcrypt from  'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -18,6 +18,8 @@ export class UsersController {
   async save(@Body() request: UserDto) {
     const { name, email, password } = request
 
-    await this.repository.create(name, email, password)
+    const pwd = bcrypt.hashSync(password, 8)
+
+    await this.repository.create(name, email, pwd)
   }
 }
